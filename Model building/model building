@@ -1,1 +1,132 @@
 
+Time
+#
+Log Message
+12.7s	1	/kaggle/input/rainfall-data-india-since-1901/rainfall_India_2017.csv
+13.5s	2	<class 'pandas.core.frame.DataFrame'>
+13.5s	3	RangeIndex: 4188 entries, 0 to 4187
+13.5s	4	Data columns (total 15 columns):
+13.5s	5	 #   Column       Non-Null Count  Dtype  
+13.5s	6	---  ------       --------------  -----  
+13.5s	7	 0   subdivision  4188 non-null   object 
+13.5s	8	 1   year         4188 non-null   int64  
+13.5s	9	 2   jan          4184 non-null   float64
+13.5s	10	 3   feb          4185 non-null   float64
+13.5s	11	 4   mar          4182 non-null   float64
+13.5s	12	 5   apr          4184 non-null   float64
+13.5s	13	 6   may          4185 non-null   float64
+13.5s	14	 7   jun          4183 non-null   float64
+13.5s	15	 8   jul          4181 non-null   float64
+13.5s	16	 9   aug          4184 non-null   float64
+13.5s	17	 10  sep          4182 non-null   float64
+13.5s	18	 11  oct          4181 non-null   float64
+13.5s	19	 12  nov          4177 non-null   float64
+13.5s	20	 13  dec          4178 non-null   float64
+13.5s	21	 14  annual       4162 non-null   float64
+13.5s	22	dtypes: float64(13), int64(1), object(1)
+13.5s	23	memory usage: 490.9+ KB
+13.7s	24	Dataset comprises of 4188 observations and 15 characteristics
+13.7s	25	
+13.7s	26	Unique Values:  subdivision      36
+13.7s	27	year            117
+13.7s	28	jan             808
+13.7s	29	feb             902
+13.7s	30	mar             989
+13.7s	31	apr            1247
+13.7s	32	may            1751
+13.7s	33	jun            2754
+13.7s	34	jul            3093
+13.7s	35	aug            2950
+13.7s	36	sep            2664
+13.7s	37	oct            1958
+13.7s	38	nov            1245
+13.7s	39	dec             810
+13.7s	40	annual         3770
+13.7s	41	dtype: int64
+13.7s	42	
+13.7s	43	Missing Values
+12.7s	1	/kaggle/input/rainfall-data-india-since-1901/rainfall_India_2017.csv
+13.5s	2	<class 'pandas.core.frame.DataFrame'>
+13.5s	3	RangeIndex: 4188 entries, 0 to 4187
+13.5s	4	Data columns (total 15 columns):
+13.5s	5	 #   Column       Non-Null Count  Dtype  
+13.5s	6	---  ------       --------------  -----  
+13.5s	7	 0   subdivision  4188 non-null   object 
+13.5s	8	 1   year         4188 non-null   int64  
+13.5s	9	 2   jan          4184 non-null   float64
+13.5s	10	 3   feb          4185 non-null   float64
+13.5s	11	 4   mar          4182 non-null   float64
+13.5s	12	 5   apr          4184 non-null   float64
+13.5s	13	 6   may          4185 non-null   float64
+13.5s	14	 7   jun          4183 non-null   float64
+13.5s	15	 8   jul          4181 non-null   float64
+13.5s	16	 9   aug          4184 non-null   float64
+13.5s	17	 10  sep          4182 non-null   float64
+13.5s	18	 11  oct          4181 non-null   float64
+13.5s	19	 12  nov          4177 non-null   float64
+13.5s	20	 13  dec          4178 non-null   float64
+13.5s	21	 14  annual       4162 non-null   float64
+13.5s	22	dtypes: float64(13), int64(1), object(1)
+13.5s	23	memory usage: 490.9+ KB
+13.7s	24	Dataset comprises of 4188 observations and 15 characteristics
+13.7s	25	
+13.7s	26	Unique Values:  subdivision      36
+13.7s	27	year            117
+13.7s	28	jan             808
+13.7s	29	feb             902
+13.7s	30	mar             989
+13.7s	31	apr            1247
+13.7s	32	may            1751
+13.7s	33	jun            2754
+13.7s	34	jul            3093
+13.7s	35	aug            2950
+13.7s	36	sep            2664
+13.7s	37	oct            1958
+13.7s	38	nov            1245
+13.7s	39	dec             810
+13.7s	40	annual         3770
+13.7s	41	dtype: int64
+13.7s	42	
+13.7s	43	Missing Values:  subdivision     0
+13.7s	44	year            0
+13.7s	45	jan             4
+13.7s	46	feb             3
+13.7s	47	mar             6
+13.7s	48	apr             4
+13.7s	49	may             3
+13.7s	50	jun             5
+13.7s	51	jul             7
+13.7s	52	aug             4
+13.7s	53	sep             6
+13.7s	54	oct             7
+13.7s	55	nov            11
+13.7s	56	dec            10
+13.7s	57	annual         26
+13.7s	58	dtype: int64
+21.2s	59	
+21.2s	60	The highest 6331.1 millimeter rainfall happens in Arunachal Pradesh & the year of 1948. 
+21.2s	61	
+21.2s	62	The lowest 0.0 millimeter rainfall happens in Andaman & Nicobar Islands & the year of 1932. 
+232.7s	63	[NbConvertApp] Converting notebook __notebook__.ipynb to notebook
+233.8s	64	[NbConvertApp] Writing 3610885 bytes to __notebook__.ipynb
+234.6s	65	[NbConvertApp] Converting notebook __notebook__.ipynb to html
+236.3s	66	[NbConvertApp] Support files will be in __results___files/
+236.3s	67	[NbConvertApp] Making directory __results___files
+236.3s	68	[NbConvertApp] Making directory __results___files
+236.3s	69	[NbConvertApp] Making directory __results___files
+236.3s	70	[NbConvertApp] Making directory __results___files
+236.3s	71	[NbConvertApp] Making directory __results___files
+236.3s	72	[NbConvertApp] Making directory __results___files
+236.3s	73	[NbConvertApp] Making directory __results___files
+236.3s	74	[NbConvertApp] Making directory __results___files
+236.3s	75	[NbConvertApp] Making directory __results___files
+236.3s	76	[NbConvertApp] Making directory __results___files
+236.3s	77	[NbConvertApp] Making directory __results___files
+236.3s	78	[NbConvertApp] Making directory __results___files
+236.3s	79	[NbConvertApp] Making directory __results___files
+236.3s	80	[NbConvertApp] Making directory __results___files
+236.3s	81	[NbConvertApp] Making directory __results___files
+236.3s	82	[NbConvertApp] Making directory __results___files
+236.3s	83	[NbConvertApp] Making directory __results___files
+236.3s	84	[NbConvertApp] Making directory __results___files
+236.3s	85	[NbConvertApp] Making directory __results___files
