@@ -1,1 +1,380 @@
+% Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
 
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+  0     0    0     0    0     0      0      0 --:--:--  0:00:01 --:--:--     0
+  0     0    0     0    0     0      0      0 --:--:--  0:00:01 --:--:--     0
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn import datasets
+from sklearn.preprocessing import MinMaxScaler #use anything
+from sklearn.decomposition import PCA #use anything
+df = pd.read_csv("C:\\Users\\DINESH KUMAR\\downloads\\weatherAUS.csv")
+df.head()
+Date	Location	MinTemp	MaxTemp	Rainfall	Evaporation	Sunshine	WindGustDir	WindGustSpeed	WindDir9am	...	Humidity9am	Humidity3pm	Pressure9am	Pressure3pm	Cloud9am	Cloud3pm	Temp9am	Temp3pm	RainToday	RainTomorrow
+0	01-12-2008	Albury	13.4	22.9	0.6	NaN	NaN	W	44.0	W	...	71.0	22.0	1007.7	1007.1	8.0	NaN	16.9	21.8	No	No
+1	02-12-2008	Albury	7.4	25.1	0.0	NaN	NaN	WNW	44.0	NNW	...	44.0	25.0	1010.6	1007.8	NaN	NaN	17.2	24.3	No	No
+2	03-12-2008	Albury	12.9	25.7	0.0	NaN	NaN	WSW	46.0	W	...	38.0	30.0	1007.6	1008.7	NaN	2.0	21.0	23.2	No	No
+3	04-12-2008	Albury	9.2	28.0	0.0	NaN	NaN	NE	24.0	SE	...	45.0	16.0	1017.6	1012.8	NaN	NaN	18.1	26.5	No	No
+4	05-12-2008	Albury	17.5	32.3	1.0	NaN	NaN	W	41.0	ENE	...	82.0	33.0	1010.8	1006.0	7.0	8.0	17.8	29.7	No	No
+5 rows × 23 columns
+
+df.columns
+Index(['Date', 'Location', 'MinTemp', 'MaxTemp', 'Rainfall', 'Evaporation',
+       'Sunshine', 'WindGustDir', 'WindGustSpeed', 'WindDir9am', 'WindDir3pm',
+       'WindSpeed9am', 'WindSpeed3pm', 'Humidity9am', 'Humidity3pm',
+       'Pressure9am', 'Pressure3pm', 'Cloud9am', 'Cloud3pm', 'Temp9am',
+       'Temp3pm', 'RainToday', 'RainTomorrow'],
+      dtype='object')
+df.shape
+(145460, 23)
+df.info()
+RangeIndex: 145460 entries, 0 to 145459
+Data columns (total 23 columns):
+ #   Column         Non-Null Count   Dtype  
+---  ------         --------------   -----  
+ 0   Date           145460 non-null  object 
+ 1   Location       145460 non-null  object 
+ 2   MinTemp        143975 non-null  float64
+ 3   MaxTemp        144199 non-null  float64
+ 4   Rainfall       142199 non-null  float64
+ 5   Evaporation    82670 non-null   float64
+ 6   Sunshine       75625 non-null   float64
+ 7   WindGustDir    135134 non-null  object 
+ 8   WindGustSpeed  135197 non-null  float64
+ 9   WindDir9am     134894 non-null  object 
+ 10  WindDir3pm     141232 non-null  object 
+ 11  WindSpeed9am   143693 non-null  float64
+ 12  WindSpeed3pm   142398 non-null  float64
+ 13  Humidity9am    142806 non-null  float64
+ 14  Humidity3pm    140953 non-null  float64
+ 15  Pressure9am    130395 non-null  float64
+ 16  Pressure3pm    130432 non-null  float64
+ 17  Cloud9am       89572 non-null   float64
+ 18  Cloud3pm       86102 non-null   float64
+ 19  Temp9am        143693 non-null  float64
+ 20  Temp3pm        141851 non-null  float64
+ 21  RainToday      142199 non-null  object 
+ 22  RainTomorrow   142193 non-null  object 
+dtypes: float64(16), object(7)
+memory usage: 25.5+ MB
+df.describe()
+MinTemp	MaxTemp	Rainfall	Evaporation	Sunshine	WindGustSpeed	WindSpeed9am	WindSpeed3pm	Humidity9am	Humidity3pm	Pressure9am	Pressure3pm	Cloud9am	Cloud3pm	Temp9am	Temp3pm
+count	143975.000000	144199.000000	142199.000000	82670.000000	75625.000000	135197.000000	143693.000000	142398.000000	142806.000000	140953.000000	130395.00000	130432.000000	89572.000000	86102.000000	143693.000000	141851.00000
+mean	12.194034	23.221348	2.360918	5.468232	7.611178	40.035230	14.043426	18.662657	68.880831	51.539116	1017.64994	1015.255889	4.447461	4.509930	16.990631	21.68339
+std	6.398495	7.119049	8.478060	4.193704	3.785483	13.607062	8.915375	8.809800	19.029164	20.795902	7.10653	7.037414	2.887159	2.720357	6.488753	6.93665
+min	-8.500000	-4.800000	0.000000	0.000000	0.000000	6.000000	0.000000	0.000000	0.000000	0.000000	980.50000	977.100000	0.000000	0.000000	-7.200000	-5.40000
+25%	7.600000	17.900000	0.000000	2.600000	4.800000	31.000000	7.000000	13.000000	57.000000	37.000000	1012.90000	1010.400000	1.000000	2.000000	12.300000	16.60000
+50%	12.000000	22.600000	0.000000	4.800000	8.400000	39.000000	13.000000	19.000000	70.000000	52.000000	1017.60000	1015.200000	5.000000	5.000000	16.700000	21.10000
+75%	16.900000	28.200000	0.800000	7.400000	10.600000	48.000000	19.000000	24.000000	83.000000	66.000000	1022.40000	1020.000000	7.000000	7.000000	21.600000	26.40000
+max	33.900000	48.100000	371.000000	145.000000	14.500000	135.000000	130.000000	87.000000	100.000000	100.000000	1041.00000	1039.600000	9.000000	9.000000	40.200000	46.70000
+df.isnull().any()
+Date             False
+Location         False
+MinTemp           True
+MaxTemp           True
+Rainfall          True
+Evaporation       True
+Sunshine          True
+WindGustDir       True
+WindGustSpeed     True
+WindDir9am        True
+WindDir3pm        True
+WindSpeed9am      True
+WindSpeed3pm      True
+Humidity9am       True
+Humidity3pm       True
+Pressure9am       True
+Pressure3pm       True
+Cloud9am          True
+Cloud3pm          True
+Temp9am           True
+Temp3pm           True
+RainToday         True
+RainTomorrow      True
+dtype: bool
+df[ "MinTemp"].fillna(df["MinTemp"].mean(),inplace=True)
+df[ "MaxTemp"].fillna(df["MaxTemp"].mean(),inplace=True)
+df[ "Rainfall"].fillna(df["Rainfall"].mean(),inplace=True)
+df[ "Evaporation"].fillna(df["Evaporation"].mean(),inplace=True)
+df[ "Sunshine"].fillna(df["Sunshine"].mean(),inplace=True)
+df[ "Pressure9am"].fillna(df["Pressure9am"].mean(),inplace=True)
+df[ "Cloud9am"].fillna(df["Cloud9am"].mean(),inplace=True)
+df[ "Cloud3pm"].fillna(df["Cloud3pm"].mean(),inplace=True)
+df[ "Temp9am"].fillna(df["Temp9am"].mean(),inplace=True)
+df[ "Temp3pm"].fillna(df["Temp3pm"].mean(),inplace=True)
+df[ "WindGustSpeed"].fillna(df["WindGustSpeed"].mean(),inplace=True)
+df[ "WindSpeed9am"].fillna(df["WindSpeed9am"].mean(),inplace=True)
+df[ "WindSpeed3pm"].fillna(df["WindSpeed3pm"].mean(),inplace=True)
+df[ "Humidity9am"].fillna(df["Humidity9am"].mean(),inplace=True)
+df[ "Humidity3pm"].fillna(df["Humidity3pm"].mean(),inplace=True)
+print("Unique values in WindGustDir:",df.WindGustDir.unique())
+print("Unique values in WindDir9am:",df.WindDir9am.unique())
+print("Unique values in WindDir3pm:",df.WindDir3pm.unique())
+print("Unique values in RainToday:",df.RainToday.unique())
+print("Unique values in RainTomorrow:",df.RainTomorrow.unique())
+Unique values in WindGustDir: ['W' 'WNW' 'WSW' 'NE' 'NNW' 'N' 'NNE' 'SW' nan 'ENE' 'SSE' 'S' 'NW' 'SE'
+ 'ESE' 'E' 'SSW']
+Unique values in WindDir9am: ['W' 'NNW' 'SE' 'ENE' 'SW' 'SSE' 'S' 'NE' nan 'SSW' 'N' 'WSW' 'ESE' 'E'
+ 'NW' 'WNW' 'NNE']
+Unique values in WindDir3pm: ['WNW' 'WSW' 'E' 'NW' 'W' 'SSE' 'ESE' 'ENE' 'NNW' 'SSW' 'SW' 'SE' 'N' 'S'
+ 'NNE' nan 'NE']
+Unique values in RainToday: ['No' 'Yes' nan]
+Unique values in RainTomorrow: ['No' 'Yes' nan]
+df[ "WindGustDir"].fillna(df["WindGustDir"].mode()[0],inplace=True)
+df[ "WindDir9am"].fillna(df["WindDir9am"].mode()[0],inplace=True)
+df[ "WindDir3pm"].fillna(df["WindDir3pm"].mode()[0],inplace=True)
+df[ "Pressure3pm"].fillna(df["Pressure3pm"].mode()[0],inplace=True)
+df[ "RainToday"].fillna(df["RainToday"].mode()[0],inplace=True)
+df[ "RainTomorrow"].fillna(df["RainTomorrow"].mode()[0],inplace=True)
+df.isnull().any()
+Date             False
+Location         False
+MinTemp          False
+MaxTemp          False
+Rainfall         False
+Evaporation      False
+Sunshine         False
+WindGustDir      False
+WindGustSpeed    False
+WindDir9am       False
+WindDir3pm       False
+WindSpeed9am     False
+WindSpeed3pm     False
+Humidity9am      False
+Humidity3pm      False
+Pressure9am      False
+Pressure3pm      False
+Cloud9am         False
+Cloud3pm         False
+Temp9am          False
+Temp3pm          False
+RainToday        False
+RainTomorrow     False
+dtype: bool
+numerical_feature = [feature for feature in df.columns if df[feature].dtypes != 'O']
+discrete_feature=[feature for feature in numerical_feature if len(df[feature].unique())<25]
+continuous_feature = [feature for feature in numerical_feature if feature not in discrete_feature]
+categorical_feature = [feature for feature in df.columns if feature not in numerical_feature]
+print("Numerical Features Count {}".format(len(numerical_feature)))
+print("Discrete feature Count {}".format(len(discrete_feature)))
+print("Continuous feature Count {}".format(len(continuous_feature)))
+print("Categorical feature Count {}".format(len(categorical_feature)))
+Numerical Features Count 16
+Discrete feature Count 2
+Continuous feature Count 14
+Categorical feature Count 7
+for feature in continuous_feature:
+    data=df.copy()
+    sns.distplot(df[feature])
+    plt.xlabel(feature)
+    plt.ylabel("Count")
+    plt.title(feature)
+    plt.figure(figsize=(15,15))
+    plt.show()
+
+
+X = df.iloc[:, :-2].values
+print(X)
+[['01-12-2008' 'Albury' 13.4 ... 4.509930082924903 16.9 21.8]
+ ['02-12-2008' 'Albury' 7.4 ... 4.509930082924903 17.2 24.3]
+ ['03-12-2008' 'Albury' 12.9 ... 2.0 21.0 23.2]
+ ...
+ ['23-06-2017' 'Uluru' 5.4 ... 4.509930082924903 12.5 26.1]
+ ['24-06-2017' 'Uluru' 7.8 ... 2.0 15.1 26.0]
+ ['25-06-2017' 'Uluru' 14.9 ... 8.0 15.0 20.9]]
+Y = df.iloc[:, -2].values
+print(Y)
+['No' 'No' 'No' ... 'No' 'No' 'No']
+df['RainTomorrow'].value_counts().plot(kind='pie',autopct='%1.0f%%')
+
+sns.countplot(x = df["RainTomorrow"])
+
+df.RainToday = df.RainToday.map({'No': 0, 'Yes': 1})
+df_rain_by_loc = df.groupby(by='Location').sum()
+df_rain_by_loc = df_rain_by_loc[['RainToday']]
+df_rain_by_loc.head()
+RainToday
+Location	
+Adelaide	689
+Albany	902
+Albury	617
+AliceSprings	244
+BadgerysCreek	583
+import matplotlib.pyplot as plt
+plt.figure(figsize=(8, 12))
+sns.barplot(x='RainToday', 
+            y=df_rain_by_loc.index, 
+            data=df_rain_by_loc.sort_values('RainToday', ascending=False), 
+            orient='h'
+           )
+plt.xlabel('Number of Days')
+plt.title('Rainy Days by Location')
+plt.tight_layout()
+
+sns.scatterplot(data=df.sample(2000), x="MinTemp", y="MaxTemp",hue="RainToday")
+
+sns.scatterplot(data=df.sample(2000), x="Temp3pm", y="Humidity3pm",hue="RainTomorrow")
+
+corrmat = df.corr()
+plt.figure(figsize=(16,12))
+sns.heatmap(corrmat, square=True, annot=True)    
+plt.title('Correlation Heatmap of Rain in Australia Dataset')
+plt.show()
+
+import pandas as pd
+from sklearn.preprocessing import StandardScaler
+
+#Initialise the Scaler
+scaler = StandardScaler()
+X = df.drop(['Date','Location','WindGustDir', 'WindDir9am', 'WindDir3pm', 'RainToday', 'RainTomorrow'], axis=1)
+#To scale data
+scaler.fit(X)
+StandardScaler()
+df.head()
+Date	Location	MinTemp	MaxTemp	Rainfall	Evaporation	Sunshine	WindGustDir	WindGustSpeed	WindDir9am	...	Humidity9am	Humidity3pm	Pressure9am	Pressure3pm	Cloud9am	Cloud3pm	Temp9am	Temp3pm	RainToday	RainTomorrow
+0	01-12-2008	Albury	13.4	22.9	0.6	5.468232	7.611178	W	44.0	W	...	71.0	22.0	1007.7	1007.1	8.000000	4.50993	16.9	21.8	0	No
+1	02-12-2008	Albury	7.4	25.1	0.0	5.468232	7.611178	WNW	44.0	NNW	...	44.0	25.0	1010.6	1007.8	4.447461	4.50993	17.2	24.3	0	No
+2	03-12-2008	Albury	12.9	25.7	0.0	5.468232	7.611178	WSW	46.0	W	...	38.0	30.0	1007.6	1008.7	4.447461	2.00000	21.0	23.2	0	No
+3	04-12-2008	Albury	9.2	28.0	0.0	5.468232	7.611178	NE	24.0	SE	...	45.0	16.0	1017.6	1012.8	4.447461	4.50993	18.1	26.5	0	No
+4	05-12-2008	Albury	17.5	32.3	1.0	5.468232	7.611178	W	41.0	ENE	...	82.0	33.0	1010.8	1006.0	7.000000	8.00000	17.8	29.7	0	No
+5 rows × 23 columns
+
+print("Scaled values: ")
+X
+Scaled values: 
+MinTemp	MaxTemp	Rainfall	Evaporation	Sunshine	WindGustSpeed	WindSpeed9am	WindSpeed3pm	Humidity9am	Humidity3pm	Pressure9am	Pressure3pm	Cloud9am	Cloud3pm	Temp9am	Temp3pm
+0	13.4	22.900000	0.6	5.468232	7.611178	44.00000	20.0	24.0	71.0	22.0	1007.7	1007.1	8.000000	4.50993	16.9	21.8
+1	7.4	25.100000	0.0	5.468232	7.611178	44.00000	4.0	22.0	44.0	25.0	1010.6	1007.8	4.447461	4.50993	17.2	24.3
+2	12.9	25.700000	0.0	5.468232	7.611178	46.00000	19.0	26.0	38.0	30.0	1007.6	1008.7	4.447461	2.00000	21.0	23.2
+3	9.2	28.000000	0.0	5.468232	7.611178	24.00000	11.0	9.0	45.0	16.0	1017.6	1012.8	4.447461	4.50993	18.1	26.5
+4	17.5	32.300000	1.0	5.468232	7.611178	41.00000	7.0	20.0	82.0	33.0	1010.8	1006.0	7.000000	8.00000	17.8	29.7
+...	...	...	...	...	...	...	...	...	...	...	...	...	...	...	...	...
+145455	2.8	23.400000	0.0	5.468232	7.611178	31.00000	13.0	11.0	51.0	24.0	1024.6	1020.3	4.447461	4.50993	10.1	22.4
+145456	3.6	25.300000	0.0	5.468232	7.611178	22.00000	13.0	9.0	56.0	21.0	1023.5	1019.1	4.447461	4.50993	10.9	24.5
+145457	5.4	26.900000	0.0	5.468232	7.611178	37.00000	9.0	9.0	53.0	24.0	1021.0	1016.8	4.447461	4.50993	12.5	26.1
+145458	7.8	27.000000	0.0	5.468232	7.611178	28.00000	13.0	7.0	51.0	24.0	1019.4	1016.5	3.000000	2.00000	15.1	26.0
+145459	14.9	23.221348	0.0	5.468232	7.611178	40.03523	17.0	17.0	62.0	36.0	1020.2	1017.9	8.000000	8.00000	15.0	20.9
+145460 rows × 16 columns
+
+df.columns
+Index(['Date', 'Location', 'MinTemp', 'MaxTemp', 'Rainfall', 'Evaporation',
+       'Sunshine', 'WindGustDir', 'WindGustSpeed', 'WindDir9am', 'WindDir3pm',
+       'WindSpeed9am', 'WindSpeed3pm', 'Humidity9am', 'Humidity3pm',
+       'Pressure9am', 'Pressure3pm', 'Cloud9am', 'Cloud3pm', 'Temp9am',
+       'Temp3pm', 'RainToday', 'RainTomorrow'],
+      dtype='object')
+x = df.drop(["RainTomorrow","Date"], axis = 1)
+y = df['RainTomorrow']
+from sklearn import model_selection
+y = df['RainTomorrow']
+X = df.drop(['Date','Location','WindGustDir', 'WindDir9am', 'WindDir3pm', 'RainToday', 'RainTomorrow'], axis=1)
+x_train, x_test, y_train, y_test = model_selection.train_test_split(X,y,test_size= 0.1, random_state = 0)
+import xgboost
+from sklearn import metrics
+from sklearn import linear_model
+from sklearn import tree
+from sklearn.ensemble import RandomForestClassifier
+from sklearn import svm
+[13:24:51] WARNING: C:\Windows\Temp\abs_557yfx631l\croots\recipe\xgboost-split_1659548953302\work\src\learner.cc:1115: Starting in XGBoost 1.3.0, the default evaluation metric used with the objective 'binary:logistic' was changed from 'error' to 'logloss'. Explicitly set eval_metric if you'd like to restore the old behavior.
+XGBRFClassifier(base_score=0.5, booster='gbtree', colsample_bylevel=1,
+                colsample_bytree=1, enable_categorical=False, gamma=0,
+                gpu_id=-1, importance_type=None, interaction_constraints='',
+                max_delta_step=0, max_depth=6, min_child_weight=1, missing=nan,
+                monotone_constraints='()', n_estimators=100, n_jobs=8,
+                num_parallel_tree=100, objective='binary:logistic',
+                predictor='auto', random_state=0, reg_alpha=0,
+                scale_pos_weight=1, tree_method='exact', validate_parameters=1,
+                verbosity=None)
+p1 = XGBoost.predict(x_train)
+Randm_Forest = RandomForestClassifier()
+Randm_Forest.fit(x_train,y_train)
+RandomForestClassifier()
+p2 = Randm_Forest.predict(x_train)
+from sklearn.linear_model import LogisticRegression
+lr=LogisticRegression(solver='lbfgs',class_weight='balanced', max_iter=3000)
+lr.fit(x_train,y_train)
+LogisticRegression(class_weight='balanced', max_iter=3000)
+p3 = lr.predict(x_train)
+from sklearn.neighbors import KNeighborsClassifier
+kn=KNeighborsClassifier(n_neighbors=3)
+kn.fit(x_train,y_train)
+p4 = kn.predict(x_train)
+import tree
+dt=tree.DecisionTreeClassifier()
+dt.fit(x_train,y_train)
+DecisionTreeClassifier()
+p5=dt.predict(x_train)
+print("XGBoost:", metrics.accuracy_score(y_train,p1))
+print("Random_Forest:", metrics.accuracy_score(y_train,p2))
+print("Logistic Regression:", metrics.accuracy_score(y_train,p3))
+print("K-Nearest neighbors:", metrics.accuracy_score(y_train,p4))
+print("Decison Tree:", metrics.accuracy_score(y_train,p5))
+XGBoost: 0.846784912232458
+Random_Forest: 0.9999312525780283
+Logistic Regression: 0.7801533831370212
+K-Nearest neighbors: 0.8963976350886842
+Decison Tree: 0.9999541683853522
+import pickle
+pickle.dump(XGBoost,open('XGBoost_rainfall.pkl','wb'))
+pickle.dump(Randm_Forest,open('RandomForest_rainfall.pkl','wb'))
+pickle.dump(lr,open('LinearRegressor.pkl','wb'))
+pickle.dump(kn,open('KNN_rainfall.pkl','wb'))
+pickle.dump(dt,open('DecisionTree.pkl','wb'))
+models = [XGBoost, Randm_Forest, lr, kn, dt]
+m = ["XGBoost", "Random_Forest", "Logistic Regression", "K-Nearest neighbors", "Decision Tree"]
+accuracy = []
+accuracy.append(metrics.accuracy_score(y_train,p1))
+accuracy.append(metrics.accuracy_score(y_train,p2))
+accuracy.append(metrics.accuracy_score(y_train,p3))
+accuracy.append(metrics.accuracy_score(y_train,p4))
+accuracy.append(metrics.accuracy_score(y_train,p5))
+d={m[0]:{"Accuracy":accuracy[0]*100},m[1]:{"Accuracy":accuracy[1]*100},m[2]:{"Accuracy":accuracy[2]*100},m[3]:{"Accuracy":accuracy[3]*100}, m[4]:{"Accuracy":accuracy[4]*100}}
+d=pd.DataFrame(d)
+d
+XGBoost	Random_Forest	Logistic Regression	K-Nearest neighbors	Decision Tree
+Accuracy	84.678491	99.993125	78.015338	89.639764	99.995417
+max_accuracy=max(accuracy)
+model_m=m[accuracy.index(max_accuracy)]
+print(model_m, "has the maximum Training accuracy")
+print("Max accuracy ",max_accuracy*100,"%")
+Decision Tree has the maximum Training accuracy
+Max accuracy  99.99541683853522 %
+print(m[accuracy.index(max_accuracy)])
+Decision Tree
+model=models[accuracy.index(max_accuracy)]
+y_pred=model.predict(x_test)
+y_predict={"Predicted value":y_pred,"Actual value":y_test}
+y_predict=pd.DataFrame(y_predict)
+y_predict[:10].style.hide_index()
+Predicted value	  Actual value
+    Yes	             Yes
+    No	             Yes
+    No	             No
+    No	             No
+    No	             No
+    No	             No
+    No	             No
+    No	             Yes
+    Yes	             Yes
+    No	             No
+from sklearn.metrics import classification_report as cr
+
+print(cr(y_test, y_pred))
+              precision    recall  f1-score   support
+
+          No       0.86      0.86      0.86     11328
+         Yes       0.50      0.52      0.51      3218
+
+    accuracy                           0.78     14546
+   macro avg       0.68      0.69      0.68     14546
+weighted avg       0.78      0.78      0.78     14546
+
+acc = []
+from sklearn.metrics import accuracy_score
+for i in models:
+  pr=i.predict(x_test)
+  acc.append(accuracy_score)
